@@ -10,14 +10,16 @@ services:
     image: mysql:5.7
     container_name: sql
     environment:
-      MYSQL_DATABASE: test
-      MYSQL_ROOT_PASSWORD:: jelszo
+      #MYSQL_ALLOW_EMPTY_PASSWORD: no
+      MYSQL_ROOT_PASSWORD: jelszo
       MYSQL_USER: user
-      MYSQL_PASSWORD: titok123
+      MYSQL_PASSWORD: jelszo
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: test
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin
     restart: always
@@ -25,10 +27,12 @@ services:
       - "8081:80"
     environment:
       PMA_HOST: sql
-      PMA_PORT: 3307
+      PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: jelszo
+      MYSQL_USER: user
+      MYSQL_PASSWORD: jelszo
     depends_on:
       - sql
-  volumes:
-    db_data: 
-
+volumes:
+  web:
+  db_data:
